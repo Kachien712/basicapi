@@ -20,7 +20,7 @@ namespace WebApplication1.Repositories
         public async Task<Comment?> GetComment(int id)
         {
             
-            var commentModel = await _dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id);
+            var commentModel = await _dbContext.Comments.Include(a => a.AppUser).FirstOrDefaultAsync(x => x.Id == id);
             if (commentModel == null)
             {
                 return null;
@@ -33,7 +33,7 @@ namespace WebApplication1.Repositories
 
         public async Task<List<Comment>> GetComments()
         {
-            return await _dbContext.Comments.ToListAsync();
+            return await _dbContext.Comments.Include(a => a.AppUser).ToListAsync();
         }
 
         public async Task<Comment> CreateCommentAsync(Comment commentModel)

@@ -10,5 +10,6 @@ namespace WebApplication1.DTOs.Comment
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public int? StockId { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
     }
 }

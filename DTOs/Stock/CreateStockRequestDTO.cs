@@ -5,7 +5,7 @@ namespace WebApplication1.DTOs.Stock
     public class CreateStockRequestDTO
     {
         [Required]
-        [Length(10, 20, ErrorMessage = "Symbol must be between 10 and 20 characters long.")]
+        [Length(1, 5, ErrorMessage = "Symbol must be between 10 and 20 characters long.")]
         public string Symbol { get; set; } = string.Empty;
         [Required]
         [Length(10, 30, ErrorMessage = "Company name must be between 10 and 30 characters long.")]

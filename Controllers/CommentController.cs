@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data;
 using WebApplication1.DTOs;
 using WebApplication1.DTOs.Comment;
+using WebApplication1.Extensions;
 using WebApplication1.Interfaces;
 using WebApplication1.Mappers;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -13,11 +16,13 @@ namespace WebApplication1.Controllers
     {
         private readonly IStockRepository _stockRepo;
         private readonly ICommentRepository _commentRepo;
+        private readonly UserManager<AppUser> _userManager;
 
-        public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo)
+        public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo, UserManager<AppUser> userManager)
         {
             _commentRepo = commentRepo;
             _stockRepo = stockRepo;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -58,9 +63,13 @@ namespace WebApplication1.Controllers
             }
             else
             {
+                var username = User.GetUsername();
+                var appUser = await _userManager.FindByNameAsync(username);
+
                 var commentModel = commentDTO.ToCommentFromCreate(stockId);
+                commentModel.AppUserId = appUser.Id;
                 await _commentRepo.CreateCommentAsync(commentModel);
-                return CreatedAtAction(nameof(GetComment), new { id = commentModel }, commentModel.ToCommentDto());
+                return CreatedAtAction(nameof(GetComment), new { id = commentModel.Id }, commentModel.ToCommentDto());
             }
         }
 

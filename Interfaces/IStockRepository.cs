@@ -8,6 +8,7 @@ namespace WebApplication1.Interfaces
     {
         public Task<List<Stock>> GetStocksAsync(QueryObject query);
         public Task<Stock?> GetStockAsync(int id);
+        public Task<Stock?> GetBySymbolAsync(string symbol);
         public Task<Stock> CreateStockAsync(Stock stockModel);
         public Task<Stock?> UpdateStockAsync(int id, UpdateStockRequestDTO stockDTO);
         public Task<Stock?> DeleteStockAsync(int id);
